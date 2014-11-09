@@ -125,7 +125,6 @@ func (c *Bucket) Get(key string, out interface{}) error {
 
 // Returns a slice of keys that matches the query.
 // it will sort the result, if sort is set to true.
-
 // The Query uses filepath.Match for matching.
 // The query syntax is:
 //
@@ -146,7 +145,6 @@ func (c *Bucket) Get(key string, out interface{}) error {
 //
 // On Windows, escaping is disabled. Instead, '\\' is treated as
 // path separator.
-
 func (c *Bucket) Objects(query string, sort bool) ([]string, error) {
 	return c.query(false, query, sort)
 }
