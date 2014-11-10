@@ -12,8 +12,7 @@ Filebase is a filesystem based Key-Object store with plugable codec.
 
 Filebase is ideal when you want more than config files yet not a database. Because Filebase is using filesystem and optionally human readable encoding, you can work with the database with traditional text editing tools like a GUI texteditor or commandline tools like `cat`,`grep`,`head`, et all.
 
-The [gob](http://golang.org/pkg/encoding/gob/) codec makes it possible to stroe anytype of Go object and restore it later, this is ideal for storing objects that have state, or your applications who state and recoring it on reload.
-
+The [gob](http://golang.org/pkg/encoding/gob/) codec makes it possible to stroe anytype of Go object and recover it later, this is ideal for storing objects that have state to reload the after restarting your application.
 
 
 ### Codecs
@@ -45,6 +44,7 @@ Filebase has no concept of table or database, it is buckets and objects. A bucke
 
 ### TODO:
 
+ - Advisory Codec File for buckets.
  - Finish this readme.
  - Add example.
  - More test for Bucket.Query

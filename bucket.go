@@ -53,6 +53,11 @@ func (c *Bucket) Name() string {
 	return c.name
 }
 
+// Returns the last error, when a new bucket is created.
+// Some operations don't return an right away to allow for chaining
+// and the error is bubbled-up to the next operation that returns an
+// error. Alterantivly, you can just Error to check if there is any
+// errors so far.
 func (c *Bucket) Error() error {
 	return c.err
 }
@@ -161,7 +166,7 @@ type Result struct {
 	Buckets map[string]Result
 }
 
-// Query returns a Result object that hold keys and buckets that filter.
+// Query returns a Result object that hold keys and buckets that match the query.
 // The syntax is same as Objects and Buckets.
 // It only looks for objects that matches the objectQuery in backs that matchs
 // the bucketQuery.
