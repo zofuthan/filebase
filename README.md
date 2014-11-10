@@ -10,7 +10,9 @@ Filebase is a filesystem based Key-Object store with plugable codec.
 
 ### Why?
 
-Filebase is ideal when you want more than config files yet not a database. Because Filebase is using filesystem and optionally human readable encoding, you can work with the database with traditional text editing tools like a GUI texteditor or commandline tools like `cat`,`grep`,`head`, et all, it also means you can selectivly backup your data.
+Filebase is ideal when you want more than config files yet not a database. Because Filebase is using filesystem and optionally human readable encoding, you can work with the database with traditional text editing tools like a GUI texteditor or commandline tools like `cat`,`grep`,`head`, et all.
+
+The [gob](http://golang.org/pkg/encoding/gob/) codec makes it possible to stroe anytype of Go object and restore it later, this is ideal for storing objects that have state, or your applications who state and recoring it on reload.
 
 
 
