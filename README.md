@@ -4,15 +4,15 @@
 
 Version v0.1.0-alpha 
 
-Filebase is a filesystem based Key-Object store with plugable codec.
+Filebase is a filesystem based Key-Object store with pluggable codec.
 
 
 
 ### Why?
 
-Filebase is ideal when you want more than config files yet not a database. Because Filebase is using filesystem and optionally human readable encoding, you can work with the database with traditional text editing tools like a GUI texteditor or commandline tools like `cat`,`grep`,`head`, et all.
+Filebase is ideal when you want more than config files yet not a database. Because Filebase is using a filesystem and optionally a human readable encoding, you can work with the database with traditional text editing tools like a GUI text editor or command-line tools like `cat`, `grep`, `head`, et al.
 
-The [gob](http://golang.org/pkg/encoding/gob/) codec makes it possible to stroe anytype of Go object and recover it later, this is ideal for storing objects that have state to reload the after restarting your application.
+The [gob](http://golang.org/pkg/encoding/gob/) codec makes it possible to store any type of Go object and recover it later. This is ideal for storing objects that have state to reload after restarting your application.
 
 
 ### Codecs
@@ -37,11 +37,11 @@ type encoder interface {
 }
 ```
 
-### Bucket & Objects
+### Buckets & Objects
 
-Filebase has no concept of table or database, it is buckets and objects. A bucket may have any number of object and bucket to the limits supported by the underlying file system.
+Filebase has no concept of table or database, it is buckets and objects. A bucket may have any number of objects and buckets to the limits supported by the underlying file system.
 
-Please see the [API Documentation](https://godoc.org/github.com/omeid/filebase) for more details and refer to [test](filebase_test.go) for example.
+Please see the [API Documentation](https://godoc.org/github.com/omeid/filebase) for more details and refer to [test](filebase_test.go) for an example.
 
 
 ### TODO:
