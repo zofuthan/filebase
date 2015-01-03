@@ -26,7 +26,11 @@ var (
 // The codec is used for Marshling and Unmarshaling Objects.
 // Currently there is, codec.YAML, codec.JSON, codec.GOB.
 // To add your own. see https://godoc.org/github.com/omeid/filebase/codec.
-func New(location string, codec codec.Codec) *Bucket {
+func New(location string, codec codec.Codec) (*Bucket, error) {
 	location, name := path.Split(location)
-	return newBucket(location, name, codec)
+	b := newBucket(location, name, codec)
+
+	//As most error are likely to happen when the first bucket is retrived
+	//it makes sense to return it's error.
+	return b, b.Error()
 }

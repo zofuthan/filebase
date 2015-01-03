@@ -98,7 +98,10 @@ func _testDeepQuery(c *Bucket, t *testing.T) {
 
 func TestCodecs(t *testing.T) {
 	for _, codec := range codecList {
-		c := New(TestDB, codec)
+		c, err := New(TestDB, codec)
+		if err != nil {
+			t.Fatal(err)
+		}
 		_testKeys(c, t)
 		_testQuery(c, t)
 		c.Destroy(true)
@@ -107,9 +110,12 @@ func TestCodecs(t *testing.T) {
 
 func TestSubBuckets(t *testing.T) {
 
-	c := New(TestDB, codec.JSON{})
+	c, err := New(TestDB, codec.JSON{})
 	for _, name := range []string{"child", "grandchild", "greatgrandchild"} {
 		c = c.Bucket(name)
+		if c.Error() != nil {
+			t.Fatal(err)
+		}
 		_testKeys(c, t)
 		_testQuery(c, t)
 	}
