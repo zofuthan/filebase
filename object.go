@@ -89,7 +89,7 @@ func (o *object) Read(codec codec.Codec, out interface{}) (err error) {
 	return codec.NewDecoder(file).Decode(out)
 }
 
-func (o *object) Destroy() error {
+func (o *object) Drop() error {
 
 	o.Lock()
 	defer o.Unlock()

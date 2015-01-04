@@ -128,6 +128,23 @@ func (c *Bucket) Get(key string, out interface{}) error {
 	return o.Read(c.codec, out)
 }
 
+// Get returns an Object from the bucket and unmarshals it into `out`
+// Fails on decoding failur.
+func (c *Bucket) Drop(key string) error {
+
+	if c.err != nil {
+		return c.err
+	}
+
+	o, ok := c.objects[key]
+	if !ok {
+		c.objects[key] = &object{key: key, location: c.location, perm: ObjectPerm}
+		o = c.objects[key]
+	}
+
+	return o.Drop()
+}
+
 // Returns a slice of keys that matches the query.
 // it will sort the result, if sort is set to true.
 // The Query uses filepath.Match for matching.
