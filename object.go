@@ -71,6 +71,11 @@ func (o *object) Read(codec codec.Codec, out interface{}) (err error) {
 	defer o.RUnlock()
 
 	file, err := os.Open(path.Join(o.location, o.key))
+
+	if os.IsNotExist(err) {
+		return ErrorObjectNotFound
+	}
+
 	if err != nil {
 		return err
 	}
@@ -83,7 +88,7 @@ func (o *object) Read(codec codec.Codec, out interface{}) (err error) {
 		return err
 	}
 	if stat.IsDir() {
-		return ErrorNotObjectKey.Fault(o.key)
+		return ErrorNotObjectKey
 	}
 
 	return codec.NewDecoder(file).Decode(out)

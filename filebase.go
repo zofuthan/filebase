@@ -1,6 +1,7 @@
 package filebase
 
 import (
+	"errors"
 	"os"
 	"path"
 
@@ -15,10 +16,12 @@ const (
 // You should expect the following errors.
 // the fault is an error type so you should
 // treat them like so.
+
 var (
-	ErrorKeyEmpty      = fault{"Empty Key.", ""}
-	ErrorNotObjectKey  = fault{"Key %s is a bucket.", ""}
-	ErrorLocationEmpty = fault{"Location Empty.", ""}
+	ErrorKeyEmpty       = errors.New("Empty Key.")
+	ErrorNotObjectKey   = errors.New("Key is a bucket.")
+	ErrorObjectNotFound = errors.New("No Such Object.")
+	ErrorLocationEmpty  = errors.New("Location Empty.")
 )
 
 // Returns a new bucket object, it does not touch
