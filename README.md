@@ -41,6 +41,17 @@ type encoder interface {
 
 Filebase has no concept of table or database, it is buckets and objects. A bucket may have any number of objects and buckets to the limits supported by the underlying file system.
 
+
+
+### Example 
+
+
+```go
+
+
+
+
+```
 Please see the [API Documentation](https://godoc.org/github.com/omeid/filebase) for more details and refer to [test](filebase_test.go) for an example.
 
 
@@ -48,7 +59,6 @@ Please see the [API Documentation](https://godoc.org/github.com/omeid/filebase) 
 
  - Advisory Codec File for buckets.
  - Finish this readme.
- - Add example.
  - More test for Bucket.Query
 # filebase
 --

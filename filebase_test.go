@@ -1,6 +1,7 @@
 package filebase
 
 import (
+	"log"
 	"reflect"
 	"testing"
 
@@ -110,7 +111,8 @@ func TestCodecs(t *testing.T) {
 
 func TestSubBuckets(t *testing.T) {
 
-	c, err := New(TestDB, codec.JSON{})
+	p, err := New(TestDB, codec.JSON{})
+	c := p
 	for _, name := range []string{"child", "grandchild", "greatgrandchild"} {
 		c = c.Bucket(name)
 		if c.Error() != nil {
@@ -119,6 +121,26 @@ func TestSubBuckets(t *testing.T) {
 		_testKeys(c, t)
 		_testQuery(c, t)
 	}
-	_testDeepQuery(c, t)
-	c.Destroy(true)
+	p.Destroy(true)
+}
+
+func TestPutDrop(t *testing.T) {
+	b, err := New(TestDB, codec.JSON{})
+
+	b.Put("test", o, true, true)
+	b.Drop("test") //Drop the object.
+
+	objects, err := b.Objects("*", false)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if len(objects) > 0 {
+		log.Fatalf("Expected no objects. Got: %d", objects)
+	}
+
+	err = b.Destroy(false) //We shouldn't get an error.
+	if err != nil {
+		log.Fatal(err)
+	}
 }

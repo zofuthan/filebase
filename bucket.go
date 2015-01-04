@@ -128,7 +128,7 @@ func (c *Bucket) Get(key string, out interface{}) error {
 	return o.Read(c.codec, out)
 }
 
-// Get returns an Object from the bucket and unmarshals it into `out`
+// Drop deletes an Object from the bucket and filesystem.
 // Fails on decoding failur.
 func (c *Bucket) Drop(key string) error {
 
@@ -138,8 +138,9 @@ func (c *Bucket) Drop(key string) error {
 
 	o, ok := c.objects[key]
 	if !ok {
-		c.objects[key] = &object{key: key, location: c.location, perm: ObjectPerm}
-		o = c.objects[key]
+		delete(c.objects, key)
+	} else {
+		o = &object{key: key, location: c.location, perm: ObjectPerm}
 	}
 
 	return o.Drop()
