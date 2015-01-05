@@ -1,6 +1,7 @@
 package filebase
 
 import (
+	"bytes"
 	"log"
 	"reflect"
 	"testing"
@@ -127,8 +128,15 @@ func TestSubBuckets(t *testing.T) {
 func TestPutDrop(t *testing.T) {
 	b, err := New(TestDB, codec.JSON{})
 
-	b.Put("test", o, true, true)
-	b.Drop("test") //Drop the object.
+	err = b.Put("test", o, true, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = b.Drop("test") //Drop the object.
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	objects, err := b.Objects("*", false)
 	if err != nil {
@@ -136,11 +144,45 @@ func TestPutDrop(t *testing.T) {
 	}
 
 	if len(objects) > 0 {
-		log.Fatalf("Expected no objects. Got: %d", objects)
+		t.Fatalf("Expected no objects. Got: %d", objects)
 	}
 
 	err = b.Destroy(false) //We shouldn't get an error.
 	if err != nil {
-		log.Fatal(err)
+		t.Fatal(err)
+	}
+}
+
+func TestRawCodec(t *testing.T) {
+
+	c, err := New(TestDB, codec.RAW{})
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	expected := []byte(`Hello world. This is some raw data`)
+
+	err = c.Put("test", expected, true, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var result []byte
+	err = c.Get("test", &result)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = c.Destroy(true) //We shouldn't get an error.
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !bytes.Equal(expected, result) {
+		t.Fatalf("\nCollec:   %s\nCodec:    %s\nExpected: `%s`, \nGot:      `%s`", c.Name(), "RAW", expected, result)
+	}
+
+	if c.Put("should-fail", o, true, true) == nil {
+		t.Fatal("Raw should not accept anything but []byte")
 	}
 }

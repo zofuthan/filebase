@@ -14,10 +14,11 @@ Filebase is ideal when you want more than config files yet not a database. Becau
 
 The [gob](http://golang.org/pkg/encoding/gob/) codec makes it possible to store any type of Go object and recover it later. This is ideal for storing objects that have state to reload after restarting your application.
 
+Filebase can also be used as a filesystem abstraction, the RAW ([]byte passthrough) codec is idea for this.
 
 ### Codecs
 
-Filebase currently ships YAML, JSON, and gob codecs.
+Filebase currently ships YAML, JSON, gob, and RAW codecs.
 
 To build a new codec, you just need to satisify the `codec.Codec` interface:
 
@@ -37,28 +38,24 @@ type encoder interface {
 }
 ```
 
+> NOTE: You can use type casting to enforce a specific type of objects. See [Raw Codec](codec/raw.go) for example, which only accepts `[]byte`.
+
 ### Buckets & Objects
 
 Filebase has no concept of table or database, it is buckets and objects. A bucket may have any number of objects and buckets to the limits supported by the underlying file system.
 
 
-
-### Example 
-
-
-```go
+Please see the [API Documentation](https://godoc.org/github.com/omeid/filebase) for more details and refer to [test](filebase_test.go) for some example.
 
 
 
+### Contribution
 
-```
-Please see the [API Documentation](https://godoc.org/github.com/omeid/filebase) for more details and refer to [test](filebase_test.go) for an example.
+Pull requests are welcome.
 
 
 ### TODO:
 
+ - Finish [todo example](examples/todo)
  - Advisory Codec File for buckets.
- - Finish this readme.
  - More test for Bucket.Query
-# filebase
---

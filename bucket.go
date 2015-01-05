@@ -105,11 +105,17 @@ func (c *Bucket) Put(key string, data interface{}, unique bool, sync bool) error
 
 	o, ok := c.objects[key]
 	if !ok {
-		c.objects[key] = &object{key: key, location: c.location, unique: unique, perm: ObjectPerm}
-		o = c.objects[key]
+		o = &object{key: key, location: c.location, unique: unique, perm: ObjectPerm}
 	}
 
-	return o.Write(c.codec, data, sync)
+	err := o.Write(c.codec, data, sync)
+
+	if err != nil {
+		return err
+	}
+
+	c.objects[key] = o
+	return nil
 }
 
 // Get returns an Object from the bucket and unmarshals it into `out`
@@ -125,7 +131,8 @@ func (c *Bucket) Get(key string, out interface{}) error {
 		c.objects[key] = &object{key: key, location: c.location, perm: ObjectPerm}
 		o = c.objects[key]
 	}
-	return o.Read(c.codec, out)
+	err := o.Read(c.codec, out)
+	return err
 }
 
 // Drop deletes an Object from the bucket and filesystem.

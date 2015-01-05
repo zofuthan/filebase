@@ -18,7 +18,7 @@ type object struct {
 	perm     os.FileMode
 }
 
-func (o *object) Write(codec codec.Codec, data interface{}, sync bool) (err error) {
+func (o *object) Write(codec codec.Codec, data interface{}, sync bool) error {
 
 	if o.key == "" {
 		return ErrorKeyEmpty
@@ -61,7 +61,7 @@ func (o *object) Write(codec codec.Codec, data interface{}, sync bool) (err erro
 }
 
 //Read an object from file.
-func (o *object) Read(codec codec.Codec, out interface{}) (err error) {
+func (o *object) Read(codec codec.Codec, out interface{}) error {
 
 	if o.key == "" {
 		return ErrorKeyEmpty
