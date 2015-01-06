@@ -144,8 +144,8 @@ func (c *Bucket) Drop(key string) error {
 	}
 
 	o, ok := c.objects[key]
-	if !ok {
-		delete(c.objects, key)
+	if ok {
+		defer delete(c.objects, key)
 	} else {
 		o = &object{key: key, location: c.location, perm: ObjectPerm}
 	}

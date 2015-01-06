@@ -25,21 +25,19 @@ type raw_codec struct {
 func (y raw_codec) Decode(v interface{}) error {
 
 	b, ok := v.(*[]byte)
-
 	if !ok {
 		return errors.New("Raw codec only accept *[]byte")
 	}
 
-	d, err := ioutil.ReadAll(y.r)
+	var err error
+	*b, err = ioutil.ReadAll(y.r)
 
-	*b = d
 	return err
 }
 
 func (y raw_codec) Encode(v interface{}) error {
 
 	b, ok := v.([]byte)
-
 	if !ok {
 		return errors.New("Raw codec only accept []byte")
 	}

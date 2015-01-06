@@ -100,7 +100,7 @@ func _testDeepQuery(c *Bucket, t *testing.T) {
 
 func TestCodecs(t *testing.T) {
 	for _, codec := range codecList {
-		c, err := New(TestDB, codec)
+		c, err := Open(TestDB, codec)
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -112,10 +112,15 @@ func TestCodecs(t *testing.T) {
 
 func TestSubBuckets(t *testing.T) {
 
-	p, err := New(TestDB, codec.JSON{})
+	p, err := Open(TestDB, codec.JSON{})
 	c := p
 	for _, name := range []string{"child", "grandchild", "greatgrandchild"} {
 		c = c.Bucket(name)
+
+		if c.Name() != name {
+			log.Fatalf("Name mismatch.")
+		}
+
 		if c.Error() != nil {
 			t.Fatal(err)
 		}
@@ -126,7 +131,7 @@ func TestSubBuckets(t *testing.T) {
 }
 
 func TestPutDrop(t *testing.T) {
-	b, err := New(TestDB, codec.JSON{})
+	b, err := Open(TestDB, codec.JSON{})
 
 	err = b.Put("test", o, true, true)
 	if err != nil {
@@ -155,7 +160,7 @@ func TestPutDrop(t *testing.T) {
 
 func TestRawCodec(t *testing.T) {
 
-	c, err := New(TestDB, codec.RAW{})
+	c, err := Open(TestDB, codec.RAW{})
 
 	if err != nil {
 		t.Fatal(err)

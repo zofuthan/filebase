@@ -25,11 +25,12 @@ var (
 )
 
 // Returns a new bucket object, it does not touch
-// the underlying filesystem if it already exists.
+// the underlying filesystem if it already exists, creates a
+// new bucket if it doesn't exists.
 // The codec is used for Marshling and Unmarshaling Objects.
-// Currently there is, codec.YAML, codec.JSON, codec.GOB.
+// Currently there is, codec.YAML, codec.JSON, codec.GOB, and codec.Raw.
 // To add your own. see https://godoc.org/github.com/omeid/filebase/codec.
-func New(location string, codec codec.Codec) (*Bucket, error) {
+func Open(location string, codec codec.Codec) (*Bucket, error) {
 	location, name := path.Split(location)
 	b := newBucket(location, name, codec)
 

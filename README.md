@@ -2,7 +2,7 @@
 
 # Filebase [![wercker status](https://app.wercker.com/status/6438ed03b8e2d1655bef928ba1fe88fc/s "wercker status")](https://app.wercker.com/project/bykey/6438ed03b8e2d1655bef928ba1fe88fc) [![GoDoc](https://godoc.org/github.com/omeid/filebase?status.svg)](https://godoc.org/github.com/omeid/filebase) [![Build Status](https://drone.io/github.com/omeid/filebase/status.png)](https://drone.io/github.com/omeid/filebase/latest)
 
-Version v0.1.0-alpha-3
+Version v0.1.0-alpha-4
 
 Filebase is a filesystem based Key-Object store with pluggable codec.
 
@@ -45,7 +45,48 @@ type Encoder interface {
 Filebase has no concept of table or database, it is buckets and objects. A bucket may have any number of objects and buckets to the limits supported by the underlying file system.
 
 
-Please see the [API Documentation](https://godoc.org/github.com/omeid/filebase) for more details and refer to [test](filebase_test.go) for some example.
+### Exampe 
+
+```go
+
+    // Open a bucket. Will create if doesn't exists.
+	bucket, err := Open("filebase/path/and-name", codec.RAW{})
+
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	data := []byte(`Hello world. This is some raw data`)
+
+    // Put our data into the bucket.
+    // This will create a file `filebase/path/and-name/test` 
+    // containing the `data` value.
+	err = bucket.Put("test", expected, true, true)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+    // Grab our data by key and put it in fromstorage variable.
+	var fromstorage []byte
+	err = bucket.Get("test", &fromstorage)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+    // Drop the object from store. This will also delete the underlying file.
+    err = bucket.Drop("test")
+    if err != nil {
+      log.Fatal(err)
+    }
+
+   //Delete our bucket.
+	err = bucket.Destroy(false) //Expecting empty bucket.
+	if err != nil {
+		log.Fatal(err)
+	}
+
+```
+Please see the [API Documentation](https://godoc.org/github.com/omeid/filebase) for querying and more. Refer to [test](filebase_test.go) for some examples.
 
 
 
